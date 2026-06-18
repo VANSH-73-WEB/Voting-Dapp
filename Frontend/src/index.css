@@ -1,0 +1,100 @@
+/* *{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial, sans-serif;
+  background:#f5f5f5;
+}
+
+.navbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+  background:#1e293b;
+  color:white;
+}
+
+.wallet-btn{
+  padding:10px 15px;
+  border:none;
+  cursor:pointer;
+}
+
+.container{
+  width:90%;
+  margin:auto;
+  padding:30px 0;
+}
+
+.status-card{
+  background:white;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:30px;
+}
+
+.active{
+  color:green;
+}
+
+.candidate-list{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.candidate-card{
+  background:white;
+  padding:20px;
+  text-align:center;
+  border-radius:10px;
+}
+
+.candidate-card img{
+  width:100%;
+  border-radius:10px;
+}
+
+.vote-btn{
+  margin-top:15px;
+  padding:10px 20px;
+  border:none;
+  cursor:pointer;
+}
+
+.results{
+  margin-top:40px;
+  background:white;
+  padding:20px;
+  border-radius:10px;
+}
+
+.result-item{
+  margin-top:20px;
+}
+
+.bar{
+  height:20px;
+  background:#ddd;
+  border-radius:20px;
+}
+
+.fill{
+  height:100%;
+  background:green;
+  border-radius:20px;
+}
+
+footer{
+  text-align:center;
+  padding:20px;
+  background:#1e293b;
+  color:white;
+  margin-top:40px;
+} */
+ @import "tailwindcss";
+ 
