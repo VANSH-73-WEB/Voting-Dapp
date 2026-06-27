@@ -3,6 +3,8 @@ pragma solidity ^0.8.20;
 
 contract Voting {
 
+    address public owner;
+
     struct Candidate {
         uint id;
         string name;
@@ -10,24 +12,29 @@ contract Voting {
     }
 
     uint public candidateCount;
-Candidate[] public candidates;
+    Candidate[] public candidates;
+
     mapping(address => bool) public voters;
 
     constructor() {
+         owner = msg.sender;
+
+
         addCandidate("John Doe");
         addCandidate("Sarah Smith");
         addCandidate("Mike Johnson");
     }
 
-    function addCandidate(string memory _name) private {
-        candidateCount++;
+   function addCandidate(string memory _name) public {
+    require(msg.sender == owner, "Only owner");
+    candidateCount++;
 
-       candidates.push(Candidate(
+    candidates.push(Candidate(
         candidateCount,
         _name,
         0
-        ));
-    }
+    ));
+}
 
     function vote(uint _candidateId) public {
 
@@ -48,25 +55,24 @@ Candidate[] public candidates;
     }
 
     function getCandidate(uint _id)
-        public
-        view
-        returns (
-            uint,
-            string memory,
-            uint
-        )
-    {
-        Candidate memory candidate =
-            candidates[_id];
+    public
+    view
+    returns (
+        uint,
+        string memory,
+        uint
+    )
+{
+    require(_id > 0 && _id <= candidateCount, "Invalid candidate");
 
-        return (
-            candidate.id,
-            candidate.name,
-            candidate.voteCount
-        );
-    }
+    Candidate memory candidate = candidates[_id - 1];
 
-    function getCandidateCount()
+    return (
+        candidate.id,
+        candidate.name,
+        candidate.voteCount
+    );
+}    function getCandidateCount()
         public
         view
         returns(uint)

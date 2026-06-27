@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-5d1151102aeae18e6c74a4e75c929ec13828d7d1",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.9.0"
+  },
+  "userSourceNameMap": {
+    "contracts/Voting.sol": "project/contracts/Voting.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Voting.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.20;\r\n\r\ncontract Voting {\r\n\r\n    address public owner;\r\n\r\n    struct Candidate {\r\n        uint id;\r\n        string name;\r\n        uint voteCount;\r\n    }\r\n\r\n    uint public candidateCount;\r\n    Candidate[] public candidates;\r\n\r\n    mapping(address => bool) public voters;\r\n\r\n    constructor() {\r\n         owner = msg.sender;\r\n\r\n\r\n        addCandidate(\"John Doe\");\r\n        addCandidate(\"Sarah Smith\");\r\n        addCandidate(\"Mike Johnson\");\r\n    }\r\n\r\n   function addCandidate(string memory _name) public {\r\n    require(msg.sender == owner, \"Only owner\");\r\n    candidateCount++;\r\n\r\n    candidates.push(Candidate(\r\n        candidateCount,\r\n        _name,\r\n        0\r\n    ));\r\n}\r\n\r\n    function vote(uint _candidateId) public {\r\n\r\n        require(\r\n            !voters[msg.sender],\r\n            \"Already voted\"\r\n        );\r\n\r\n        require(\r\n            _candidateId > 0 &&\r\n            _candidateId <= candidateCount,\r\n            \"Invalid candidate\"\r\n        );\r\n\r\n        voters[msg.sender] = true;\r\n\r\n        candidates[_candidateId-1].voteCount++;\r\n    }\r\n\r\n    function getCandidate(uint _id)\r\n    public\r\n    view\r\n    returns (\r\n        uint,\r\n        string memory,\r\n        uint\r\n    )\r\n{\r\n    require(_id > 0 && _id <= candidateCount, \"Invalid candidate\");\r\n\r\n    Candidate memory candidate = candidates[_id - 1];\r\n\r\n    return (\r\n        candidate.id,\r\n        candidate.name,\r\n        candidate.voteCount\r\n    );\r\n}    function getCandidateCount()\r\n        public\r\n        view\r\n        returns(uint)\r\n    {\r\n        return candidateCount;\r\n    }\r\nfunction getWinner() public view returns (string memory winnerName, uint256 maxVotes) {\r\n    require(candidates.length > 0, \"No candidates yet\");\r\n\r\n    uint256 highestVotes = 0;\r\n\r\n    // Find highest vote count\r\n    for (uint256 i = 0; i < candidates.length; i++) {\r\n        if (candidates[i].voteCount > highestVotes) {\r\n            highestVotes = candidates[i].voteCount;\r\n        }\r\n    }\r\n\r\n    // Count how many candidates have highest votes\r\n    uint256 tieCount = 0;\r\n    for (uint256 i = 0; i < candidates.length; i++) {\r\n        if (candidates[i].voteCount == highestVotes) {\r\n            tieCount++;\r\n        }\r\n    }\r\n\r\n    // No tie\r\n    if (tieCount == 1) {\r\n        for (uint256 i = 0; i < candidates.length; i++) {\r\n            if (candidates[i].voteCount == highestVotes) {\r\n                return (candidates[i].name, highestVotes);\r\n            }\r\n        }\r\n    }\r\n\r\n    // Tie case\r\n    string memory result = \"Tie between \";\r\n\r\n    for (uint256 i = 0; i < candidates.length; i++) {\r\n        if (candidates[i].voteCount == highestVotes) {\r\n            result = string.concat(result, candidates[i].name);\r\n\r\n            tieCount--;\r\n\r\n            if (tieCount > 0) {\r\n                result = string.concat(result, \" and \");\r\n            }\r\n        }\r\n    }\r\n\r\n    return (result, highestVotes);\r\n}\r\n\r\n}"
+      }
+    }
+  }
+}
